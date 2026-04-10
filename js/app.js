@@ -15,10 +15,10 @@ const GreetingWidget = {
   },
 
   getGreeting(hour) {
-    if (hour >= 5  && hour < 12) return 'Good morning';
-    if (hour >= 12 && hour < 18) return 'Good afternoon';
-    if (hour >= 18 && hour <= 21) return 'Good evening';
-    return 'Good night'; // 22-23 and 0-4
+    if (hour >= 5  && hour < 12) return 'Good Morning';
+    if (hour >= 12 && hour < 18) return 'Good Afternoon';
+    if (hour >= 18 && hour < 21) return 'Good Evening';
+    return 'Good Night'; // 22-23 and 0-4
   },
 
   loadName() {
