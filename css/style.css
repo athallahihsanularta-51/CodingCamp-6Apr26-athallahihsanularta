@@ -1,0 +1,181 @@
+/* Personal Dashboard styles */
+
+/* ── Reset & base ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 16px; /* base; nothing falls below 14px */
+  min-height: 100vh;
+  background: #f0f2f5;
+  color: #1a1a2e;
+}
+
+/* ── Dashboard grid ── */
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  padding: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Single-column on narrow viewports */
+@media (max-width: 600px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+}
+
+/* ── Widget card ── */
+.widget {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.widget h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #333;
+}
+
+/* ── Typography — enforce 14px minimum ── */
+p, li, label, input, button, a {
+  font-size: max(14px, 0.875rem);
+}
+
+/* ── Buttons — visually distinguishable interactive controls ── */
+button {
+  padding: 0.35rem 0.75rem;
+  background: #4f6ef7;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: max(14px, 0.875rem);
+}
+
+button:hover:not(:disabled) {
+  background: #3a57d4;
+}
+
+button:disabled {
+  background: #b0b8d4;
+  cursor: not-allowed;
+}
+
+/* ── Timer display ── */
+.timer-display {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0.5rem 0;
+  letter-spacing: 0.05em;
+}
+
+.timer-controls {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+/* ── Todo Widget ── */
+.todo-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.todo-text {
+  flex: 1;
+}
+
+/* Standalone .completed class for strikethrough (used by TodoWidget) */
+.completed {
+  text-decoration: line-through;
+  color: #888;
+}
+
+.todo-item.completed .todo-text {
+  text-decoration: line-through;
+  color: #888;
+}
+
+.todo-inline-edit {
+  flex: 1;
+  font-size: max(14px, 0.875rem);
+  padding: 0.1rem 0.25rem;
+}
+
+.todo-form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.todo-input {
+  flex: 1;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* ── Quick Links Widget ── */
+.links-form {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.links-label,
+.links-url {
+  flex: 1;
+  min-width: 80px;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.links-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.link-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.link-btn {
+  flex: 1;
+  padding: 0.35rem 0.75rem;
+  background: #4f6ef7;
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  text-align: center;
+}
+
+.link-btn:hover {
+  background: #3a57d4;
+}

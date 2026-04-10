@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Personal Dashboard</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <main class="dashboard">
+
+      <section id="greeting" class="widget">
+        <h2 class="greeting-time"></h2>
+        <p class="greeting-date"></p>
+        <p class="greeting-message"></p>
+      </section>
+
+      <section id="timer" class="widget">
+        <h2>Focus Timer</h2>
+        <div class="timer-display">25:00</div>
+        <div class="timer-controls">
+          <button class="timer-start">Start</button>
+          <button class="timer-stop" disabled>Stop</button>
+          <button class="timer-reset">Reset</button>
+        </div>
+      </section>
+
+      <section id="todo" class="widget">
+        <h2>To-Do</h2>
+        <form class="todo-form">
+          <input type="text" class="todo-input" placeholder="Add a task…" />
+          <button type="submit">Add</button>
+        </form>
+        <ul class="todo-list"></ul>
+      </section>
+
+      <section id="links" class="widget">
+        <h2>Quick Links</h2>
+        <form class="links-form">
+          <input type="text" class="links-label" placeholder="Label" />
+          <input type="url" class="links-url" placeholder="https://…" />
+          <button type="submit">Add</button>
+        </form>
+        <div class="links-list"></div>
+      </section>
+
+    </main>
+    <script defer src="js/app.js"></script>
+  </body>
+</html>
