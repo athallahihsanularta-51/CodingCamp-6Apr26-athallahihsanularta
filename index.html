@@ -7,12 +7,19 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
+    <header class="dashboard-header">
+      <button class="theme-toggle" aria-label="Toggle light/dark mode">🌙</button>
+    </header>
     <main class="dashboard">
 
       <section id="greeting" class="widget">
         <h2 class="greeting-time"></h2>
         <p class="greeting-date"></p>
         <p class="greeting-message"></p>
+        <form class="name-form">
+          <input type="text" class="name-input" placeholder="Enter your name…" />
+          <button type="submit">Save</button>
+        </form>
       </section>
 
       <section id="timer" class="widget">
@@ -31,6 +38,11 @@
           <input type="text" class="todo-input" placeholder="Add a task…" />
           <button type="submit">Add</button>
         </form>
+        <select class="todo-sort">
+          <option value="creation">Creation order</option>
+          <option value="alphabetical">Alphabetical</option>
+          <option value="status">Status</option>
+        </select>
         <ul class="todo-list"></ul>
       </section>
 

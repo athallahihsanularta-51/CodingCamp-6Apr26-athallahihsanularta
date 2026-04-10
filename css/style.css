@@ -1,5 +1,28 @@
 /* Personal Dashboard styles */
 
+/* ── CSS custom properties (theming) ── */
+:root {
+  --color-bg:           #f0f2f5;
+  --color-surface:      #ffffff;
+  --color-text:         #1a1a2e;
+  --color-muted:        #888;
+  --color-border:       #ccc;
+  --color-accent:       #4f6ef7;
+  --color-accent-hover: #3a57d4;
+  --color-disabled:     #b0b8d4;
+}
+
+[data-theme="dark"] {
+  --color-bg:           #1a1a2e;
+  --color-surface:      #16213e;
+  --color-text:         #e0e0e0;
+  --color-muted:        #888;
+  --color-border:       #444;
+  --color-accent:       #4f6ef7;
+  --color-accent-hover: #6b85f8;
+  --color-disabled:     #3a3a5c;
+}
+
 /* ── Reset & base ── */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -11,8 +34,8 @@ body {
   font-family: system-ui, -apple-system, sans-serif;
   font-size: 16px; /* base; nothing falls below 14px */
   min-height: 100vh;
-  background: #f0f2f5;
-  color: #1a1a2e;
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 /* ── Dashboard grid ── */
@@ -35,7 +58,7 @@ body {
 
 /* ── Widget card ── */
 .widget {
-  background: #ffffff;
+  background: var(--color-surface);
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -45,7 +68,7 @@ body {
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 0.75rem;
-  color: #333;
+  color: var(--color-text);
 }
 
 /* ── Typography — enforce 14px minimum ── */
@@ -56,7 +79,7 @@ p, li, label, input, button, a {
 /* ── Buttons — visually distinguishable interactive controls ── */
 button {
   padding: 0.35rem 0.75rem;
-  background: #4f6ef7;
+  background: var(--color-accent);
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -65,11 +88,11 @@ button {
 }
 
 button:hover:not(:disabled) {
-  background: #3a57d4;
+  background: var(--color-accent-hover);
 }
 
 button:disabled {
-  background: #b0b8d4;
+  background: var(--color-disabled);
   cursor: not-allowed;
 }
 
@@ -111,12 +134,12 @@ button:disabled {
 /* Standalone .completed class for strikethrough (used by TodoWidget) */
 .completed {
   text-decoration: line-through;
-  color: #888;
+  color: var(--color-muted);
 }
 
 .todo-item.completed .todo-text {
   text-decoration: line-through;
-  color: #888;
+  color: var(--color-muted);
 }
 
 .todo-inline-edit {
@@ -133,7 +156,7 @@ button:disabled {
 .todo-input {
   flex: 1;
   padding: 0.35rem 0.5rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-border);
   border-radius: 6px;
 }
 
@@ -149,7 +172,7 @@ button:disabled {
   flex: 1;
   min-width: 80px;
   padding: 0.35rem 0.5rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-border);
   border-radius: 6px;
 }
 
@@ -169,7 +192,7 @@ button:disabled {
 .link-btn {
   flex: 1;
   padding: 0.35rem 0.75rem;
-  background: #4f6ef7;
+  background: var(--color-accent);
   color: #fff;
   border-radius: 6px;
   text-decoration: none;
@@ -177,5 +200,36 @@ button:disabled {
 }
 
 .link-btn:hover {
-  background: #3a57d4;
+  background: var(--color-accent-hover);
+}
+
+/* ── Dashboard header ── */
+.dashboard-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.theme-toggle {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0.25rem 0.5rem;
+}
+
+/* ── Todo sort control ── */
+.todo-sort {
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: max(14px, 0.875rem);
+  width: 100%;
 }

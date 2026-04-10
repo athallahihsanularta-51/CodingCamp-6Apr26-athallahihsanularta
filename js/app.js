@@ -21,14 +21,51 @@ const GreetingWidget = {
     return 'Good night'; // 22-23 and 0-4
   },
 
+  loadName() {
+    try {
+      const value = localStorage.getItem('dashboard_name');
+      return value !== null ? value.trim() : '';
+    } catch (e) {
+      return '';
+    }
+  },
+
+  saveName(name) {
+    try {
+      localStorage.setItem('dashboard_name', name.trim());
+    } catch (e) {
+      // silently degrade if localStorage is unavailable or quota exceeded
+    }
+  },
+
+  buildMessage(hour, name) {
+    const greeting = this.getGreeting(hour);
+    const trimmed = typeof name === 'string' ? name.trim() : '';
+    return trimmed ? `${greeting}, ${trimmed}` : greeting;
+  },
+
+  name: '',
+
   render() {
     const now = new Date();
     document.querySelector('#greeting .greeting-time').textContent    = this.formatTime(now);
     document.querySelector('#greeting .greeting-date').textContent    = this.formatDate(now);
-    document.querySelector('#greeting .greeting-message').textContent = this.getGreeting(now.getHours());
+    document.querySelector('#greeting .greeting-message').textContent = this.buildMessage(now.getHours(), this.name);
   },
 
   init() {
+    this.name = this.loadName();
+    const nameForm = document.querySelector('#greeting .name-form');
+    if (nameForm) {
+      const nameInput = nameForm.querySelector('.name-input');
+      nameForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const trimmed = nameInput ? nameInput.value.trim() : '';
+        this.saveName(trimmed);
+        this.name = trimmed;
+        this.render();
+      });
+    }
     this.render();
     setInterval(() => this.render(), 60000);
   },
@@ -94,6 +131,7 @@ const TimerWidget = {
 
 const TodoWidget = {
   tasks: [],
+  sortOrder: 'creation',
 
   load() {
     try {
@@ -116,7 +154,7 @@ const TodoWidget = {
   addTask(text) {
     const trimmed = text.trim();
     if (!trimmed) return;
-    this.tasks.push({ id: crypto.randomUUID(), text: trimmed, completed: false });
+    this.tasks.push({ id: crypto.randomUUID(), text: trimmed, completed: false, createdAt: Date.now() });
     this.save();
     this.render();
   },
@@ -149,10 +187,42 @@ const TodoWidget = {
     this.render();
   },
 
+  loadSort() {
+    try {
+      const value = localStorage.getItem('dashboard_sort');
+      if (value === 'creation' || value === 'alphabetical' || value === 'status') return value;
+      return 'creation';
+    } catch (e) {
+      return 'creation';
+    }
+  },
+
+  saveSort(order) {
+    try {
+      localStorage.setItem('dashboard_sort', order);
+    } catch (e) {
+      // silently degrade if localStorage is unavailable or quota exceeded
+    }
+  },
+
+  sortTasks(tasks, order) {
+    const copy = [...tasks];
+    if (order === 'alphabetical') {
+      copy.sort((a, b) => a.text.toLowerCase().localeCompare(b.text.toLowerCase()));
+    } else if (order === 'status') {
+      copy.sort((a, b) => (a.completed === b.completed ? 0 : a.completed ? 1 : -1));
+    } else {
+      // 'creation' — sort by createdAt ascending, missing createdAt treated as 0
+      copy.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+    }
+    return copy;
+  },
+
   render() {
     const list = document.querySelector('#todo .todo-list');
     list.innerHTML = '';
-    this.tasks.forEach(task => {
+    const sorted = this.sortTasks(this.tasks, this.sortOrder);
+    sorted.forEach(task => {
       const li = document.createElement('li');
       li.className = 'todo-item' + (task.completed ? ' completed' : '');
       li.dataset.id = task.id;
@@ -201,6 +271,16 @@ const TodoWidget = {
   },
 
   init() {
+    this.sortOrder = this.loadSort();
+    const sortSelect = document.querySelector('#todo .todo-sort');
+    if (sortSelect) {
+      sortSelect.value = this.sortOrder;
+      sortSelect.addEventListener('change', () => {
+        this.sortOrder = sortSelect.value;
+        this.saveSort(this.sortOrder);
+        this.render();
+      });
+    }
     this.tasks = this.load();
     const form = document.querySelector('#todo .todo-form');
     const input = document.querySelector('#todo .todo-input');
@@ -293,7 +373,53 @@ const LinksWidget = {
   },
 };
 
+const ThemeManager = {
+  STORAGE_KEY: 'dashboard_theme',
+  VALID_THEMES: ['light', 'dark'],
+
+  load() {
+    try {
+      const value = localStorage.getItem(this.STORAGE_KEY);
+      return this.VALID_THEMES.includes(value) ? value : 'light';
+    } catch (e) {
+      return 'light';
+    }
+  },
+
+  save(theme) {
+    try {
+      localStorage.setItem(this.STORAGE_KEY, theme);
+    } catch (e) {
+      // silently degrade if localStorage is unavailable or quota exceeded
+    }
+  },
+
+  apply(theme) {
+    document.body.dataset.theme = theme;
+  },
+
+  toggle() {
+    const current = document.body.dataset.theme === 'dark' ? 'dark' : 'light';
+    const next = current === 'dark' ? 'light' : 'dark';
+    this.save(next);
+    this.apply(next);
+    const btn = document.querySelector('.theme-toggle');
+    if (btn) btn.textContent = next === 'dark' ? '☀️' : '🌙';
+  },
+
+  init() {
+    const theme = this.load();
+    this.apply(theme);
+    const btn = document.querySelector('.theme-toggle');
+    if (btn) {
+      btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+      btn.addEventListener('click', () => this.toggle());
+    }
+  },
+};
+
 document.addEventListener('DOMContentLoaded', () => {
+  ThemeManager.init();
   GreetingWidget.init();
   TimerWidget.init();
   TodoWidget.init();
